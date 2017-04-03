@@ -7,8 +7,8 @@ import org.flywaydb.core.Flyway;
  */
 
 public class App {
-   static final private String url="jdbc:mysql://127.0.0.1:3307/airport";
-   static final private String user="airport";
+   static final private String url="jdbc:mysql://localhost:3306/airport?createDatabaseIfNotExist=true";
+   static final private String user="root";
    static final private String password="admin";
 
     public static void main(String[] args) {
