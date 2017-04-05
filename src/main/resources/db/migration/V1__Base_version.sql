@@ -1,5 +1,5 @@
 CREATE TABLE ticket(
-ID int NOT NULL,
+ID INT NOT NULL,
 Voyage_id VARCHAR(10),
 Class VARCHAR(10),
 Passenger_id INT,
@@ -10,10 +10,10 @@ FOREIGN KEY (Passenger_id) REFERENCES passengers(ID)
 )
 
 CREATE TABLE voyage(
-ID int NOT NULL,
-Flight_number VARCHAR(10),
-Arrival_port VARCHAR(10),
-Departure_port VARCHAR(10),
+ID INT NOT NULL,
+Flight_number VARCHAR(20),
+Arrival_port VARCHAR(20),
+Departure_port VARCHAR(20),
 PRIMARY KEY(ID)
 )
 
