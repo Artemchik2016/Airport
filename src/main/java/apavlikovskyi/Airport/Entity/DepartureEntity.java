@@ -1,9 +1,9 @@
-package apavlikovskyi.Airport.Class_entity;
+package apavlikovskyi.Airport.Entity;
 
 /**
  * Created by Diana P on 04.04.2017.
  */
-public class Departure_entity {
+public class DepartureEntity {
     private String voyage_id;
     private String date;
     private String time;

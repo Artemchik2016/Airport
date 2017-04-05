@@ -1,9 +1,9 @@
-package apavlikovskyi.Airport.Class_entity;
+package apavlikovskyi.Airport.Entity;
 
 /**
  * Created by Diana P on 04.04.2017.
  */
-public class Passengers_entity {
+public class PassengersEntity {
     private int id;
     private String first_name;
     private String last_name;
