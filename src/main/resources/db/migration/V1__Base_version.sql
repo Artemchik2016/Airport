@@ -42,7 +42,7 @@ Terminal VARCHAR(10),
 Flight_status VARCHAR(10),
 Gate VARCHAR(10),
 PRIMARY KEY(Voyage_id),
-FOREIGN KEY(Voyage_id) REFERENCES voyage(id)
+FOREIGN KEY(Voyage_id) REFERENCES voyage(ID)
 );
 
 CREATE TABLE arrival(
@@ -53,5 +53,5 @@ Terminal VARCHAR(10),
 Flight_status VARCHAR(10),
 Gate VARCHAR(10),
 PRIMARY KEY(Voyage_id),
-FOREIGN KEY(Voyage_id) REFERENCES voyage(id)
+FOREIGN KEY(Voyage_id) REFERENCES voyage(ID)
 );
