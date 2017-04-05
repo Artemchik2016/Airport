@@ -5,4 +5,18 @@ package apavlikovskyi.Airport.DAO;
  */
 public class Ticket {
 
+    public static void view(){
+
+    }
+
+    public static void delete(){
+
+    }
+
+    public static void insert(){
+
+    }
+    public static void update(){
+
+    }
 }
