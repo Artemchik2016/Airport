@@ -1,6 +1,6 @@
 package apavlikovskyi.Airport;
 
-import apavlikovskyi.Airport.DAO.DataBaseConnection;
+import apavlikovskyi.Airport.DAO.DAOUtil.DataBaseConnection;
 
 public class App {
 
