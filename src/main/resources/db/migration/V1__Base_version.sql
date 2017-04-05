@@ -3,7 +3,7 @@ ID varchar(10) NOT NULL,
 Flight_number VARCHAR(10),
 Arrival_port VARCHAR(10),
 Departure_port VARCHAR(10),
-PRIMARY KEY(ID)
+PRIMARY KEY (ID)
 );
 
 CREATE TABLE airplanes(
