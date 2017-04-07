@@ -1,4 +1,4 @@
-package apavlikovskyi.Airport.DAO.DAOUtil;
+package apavlikovskyi.airport.dao.daoUtil;
 
 import org.flywaydb.core.Flyway;
 import java.sql.Connection;

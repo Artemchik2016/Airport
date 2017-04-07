@@ -1,15 +1,14 @@
-package apavlikovskyi.Airport.Entity;
+package apavlikovskyi.airport.entity;
 
 /**
  * Created by Diana P on 04.04.2017.
  */
-public class DepartureEntity {
+public class ArrivalEntity {
     private String voyage_id;
     private String date;
     private String time;
     private String terminal;
     private String flight_status;
-    private String gate;
 
     public String getVoyage_id() {
         return voyage_id;
@@ -58,4 +57,6 @@ public class DepartureEntity {
     public void setGate(String gate) {
         this.gate = gate;
     }
+
+    private String gate;
 }

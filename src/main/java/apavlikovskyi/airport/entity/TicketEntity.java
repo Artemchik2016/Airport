@@ -1,4 +1,4 @@
-package apavlikovskyi.Airport.Entity;
+package apavlikovskyi.airport.entity;
 
 /**
  * Created by Diana P on 04.04.2017.

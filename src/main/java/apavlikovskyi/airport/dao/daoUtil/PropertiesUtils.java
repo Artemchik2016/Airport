@@ -1,4 +1,4 @@
-package apavlikovskyi.Airport.DAO.DAOUtil;
+package apavlikovskyi.airport.dao.daoUtil;
 
 import java.io.IOException;
 import java.io.InputStream;

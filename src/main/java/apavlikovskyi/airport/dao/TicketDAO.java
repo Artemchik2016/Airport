@@ -1,22 +1,24 @@
-package apavlikovskyi.Airport.DAO;
+package apavlikovskyi.airport.dao;
 
-import apavlikovskyi.Airport.Entity.TicketEntity;
+import apavlikovskyi.airport.entity.TicketEntity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static apavlikovskyi.Airport.DAO.DAOUtil.DataBaseConnection.*;
+import static apavlikovskyi.airport.dao.daoUtil.DataBaseConnection.*;
 /**
  * Created by Diana P on 04.04.2017.
  */
 public class TicketDAO {
-    static  PreparedStatement statement;
+      PreparedStatement statement;
+      ResultSet resultSet;
 
-    public static void delete(int id){
+
+    public  void delete(int id){
         try {
-            statement=getConnection().prepareStatement("DELETE FROM ticket WHERE ID=?");
+            statement = getConnection().prepareStatement("DELETE FROM ticket WHERE ID = ?");
             statement.setInt(1,id);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -24,12 +26,13 @@ public class TicketDAO {
         }
     }
 
-    List getAll(){
+    List<TicketEntity> getAll(){
         List<TicketEntity> list=null;
+        ResultSet resultSet=null;
         try {
-            statement=getConnection().prepareStatement("SELECT * FROM ticket");
-            ResultSet resultSet=statement.executeQuery();
-            list =new ArrayList<>();
+            statement = getConnection().prepareStatement("SELECT * FROM ticket");
+            resultSet=statement.executeQuery();
+            list = new ArrayList<>();
             while (resultSet.next()) {
                 TicketEntity ticket= new TicketEntity();
                 ticket.setId(resultSet.getInt("ID"));
@@ -39,9 +42,15 @@ public class TicketDAO {
                 ticket.setSeatNumber(resultSet.getString("Seat_number"));
                 list.add(ticket);
             }
-
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally{
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     return list;
     }
@@ -49,26 +58,33 @@ public class TicketDAO {
     TicketEntity getById (int id){
         TicketEntity ticket=null;
         try {
-            statement=getConnection().prepareStatement("SELECT * FROM ticket WHERE ID=?");
+            statement = getConnection().prepareStatement("SELECT * FROM ticket WHERE ID = ?");
             statement.setInt(1,id);
-            ResultSet resultSet=statement.executeQuery();
-            ticket= new TicketEntity();
+            statement.executeQuery();
+            ticket = new TicketEntity();
             ticket.setId(resultSet.getInt("ID"));
             ticket.setVoyageId(resultSet.getString("Voyage_id"));
             ticket.setSeatClass(resultSet.getString("Seat_number"));
             ticket.setPassengerId(resultSet.getString("Passenger_id"));
             ticket.setSeatNumber(resultSet.getString("Seat_number"));
-            } catch (SQLException e1) {
-            e1.printStackTrace();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+        }
         return ticket;
     }
 
 
 
-    public static void insert(TicketEntity entity){
+    public  void save(TicketEntity entity){
         try {
-            statement=getConnection().prepareStatement("INSERT INTO ticket VALUES (?,?,?,?,?)");
+            statement = getConnection().prepareStatement("INSERT INTO ticket VALUES (?,?,?,?,?)");
             statement.setInt(1,entity.getId());
             statement.setString(2,entity.getVoyageId());
             statement.setString(3,entity.getSeatClass());
@@ -79,10 +95,10 @@ public class TicketDAO {
             e.printStackTrace();
         }
     }
-    public static void update(TicketEntity entity, int id){
+    public  void update(TicketEntity entity){
         try {
-            statement=getConnection().prepareStatement("UPDATE ticket SET Voyage_id=?," +
-                    "Class=?, Passenger_id=?, Seat_number=? WHERE ID=?");
+            statement = getConnection().prepareStatement("UPDATE ticket SET Voyage_id=?," +
+                    "Class = ?, Passenger_id = ?, Seat_number = ? WHERE ID = ?");
             statement.setString(1,entity.getVoyageId());
             statement.setString(2,entity.getSeatClass());
             statement.setString(3,entity.getPassengerId());
