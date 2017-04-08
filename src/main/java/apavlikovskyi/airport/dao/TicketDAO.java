@@ -16,17 +16,18 @@ public class TicketDAO {
       ResultSet resultSet;
 
 
-    public  void delete(int id){
+    public  void deleteById(int id){
         try {
             statement = getConnection().prepareStatement("DELETE FROM ticket WHERE ID = ?");
             statement.setInt(1,id);
             statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    List<TicketEntity> getAll(){
+    public List<TicketEntity> getAll(){
         List<TicketEntity> list=null;
         ResultSet resultSet=null;
         try {
@@ -55,12 +56,12 @@ public class TicketDAO {
     return list;
     }
 
-    TicketEntity getById (int id){
+    public TicketEntity getById (int id){
         TicketEntity ticket=null;
         try {
             statement = getConnection().prepareStatement("SELECT * FROM ticket WHERE ID = ?");
             statement.setInt(1,id);
-            statement.executeQuery();
+            resultSet= statement.executeQuery();
             ticket = new TicketEntity();
             ticket.setId(resultSet.getInt("ID"));
             ticket.setVoyageId(resultSet.getString("Voyage_id"));
@@ -91,6 +92,7 @@ public class TicketDAO {
             statement.setString(4,entity.getPassengerId());
             statement.setString(5,entity.getSeatNumber());
             statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,6 +106,7 @@ public class TicketDAO {
             statement.setString(3,entity.getPassengerId());
             statement.setString(4,entity.getSeatNumber());
             statement.setInt(5,entity.getId());
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

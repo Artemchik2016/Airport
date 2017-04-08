@@ -10,6 +10,17 @@ public class TicketEntity {
     private String passengerId;
     private String seatNumber;
 
+
+    public  TicketEntity(){}
+
+    public TicketEntity(int id,String voyageId, String seatClass, String passengerId, String seatNumber) {
+        this.id=id;
+        this.voyageId = voyageId;
+        this.seatClass = seatClass;
+        this.passengerId = passengerId;
+        this.seatNumber = seatNumber;
+    }
+
     public int getId() {
         return id;
     }

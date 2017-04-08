@@ -11,41 +11,47 @@ import java.util.Properties;
  */
 public class DataBaseConnection {
 
-        private static Connection connection;
-        private static Properties dbProps = PropertiesUtils.readProperties();
+    private static Connection connection;
+    private static Properties dbProps = PropertiesUtils.readProperties();
 
-        static {
-            Runtime.getRuntime().addShutdownHook(new Thread(DataBaseConnection::closeConnection));
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(DataBaseConnection::closeConnection));
+    }
+
+    public static Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                return connection = DriverManager.getConnection(dbProps.getProperty("db.url"),
+                        dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return connection;
+    }
 
-        public static Connection getConnection() {
+    public static void closeConnection() {
+        if (connection != null) {
             try {
-                if (connection == null || connection.isClosed()){
-                    return connection = DriverManager.getConnection(dbProps.getProperty("db.url"),
-                            dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
-                }
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return connection;
         }
+    }
 
-        public static void closeConnection(){
-            if (connection != null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public static void migrate() {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(dbProps.getProperty("db.url"),
+                dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
+        flyway.migrate();
+    }
 
-        public static void migrate (){
-            Flyway flyway = new Flyway();
-            flyway.setDataSource(dbProps.getProperty("db.url"),
-                    dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
-            flyway.migrate();
-        }
+    public static void testMigrate() {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(dbProps.getProperty("db.urlTest"),
+                dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
+        flyway.migrate();
+    }
 
 }
-
