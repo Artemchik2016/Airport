@@ -1,6 +1,8 @@
 package apavlikovskyi.airport.dao;
 
 import static apavlikovskyi.airport.dao.daoUtil.DataBaseConnection.*;
+
+import apavlikovskyi.airport.entity.TicketEntity;
 import apavlikovskyi.airport.entity.VoyageEntity;
 
 import java.sql.PreparedStatement;
@@ -13,18 +15,18 @@ import java.util.List;
  * Created by Артем on 08.04.2017.
  */
 public class VoyageDAO {
-    PreparedStatement preparedStatement;
+    PreparedStatement statement;
     ResultSet resultSet;
 
     public void save(VoyageEntity voyage) {
         try {
-            preparedStatement = getConnection().prepareStatement("INSERT INTO voyage VALUES (?,?,?,?)");
-            preparedStatement.setString(1, voyage.getId());
-            preparedStatement.setString(2, voyage.getFlightNumber());
-            preparedStatement.setString(3, voyage.getArrivalPort());
-            preparedStatement.setString(4, voyage.getDeparturePort());
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
+            statement = getConnection().prepareStatement("INSERT INTO voyage VALUES (?,?,?,?)");
+            statement.setInt(1,voyage.getId());
+            statement.setString(2, voyage.getFlightNumber());
+            statement.setString(3, voyage.getArrivalPort());
+            statement.setString(4, voyage.getDeparturePort());
+            statement.executeUpdate();
+            statement.close();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -33,17 +35,16 @@ public class VoyageDAO {
     public List getAll() {
         List<VoyageEntity> list = new ArrayList<>();
         try {
-            preparedStatement = getConnection().prepareStatement("SELECT * FROM voyage");
-            resultSet = preparedStatement.executeQuery();
+            statement = getConnection().prepareStatement("SELECT * FROM voyage");
+            resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 VoyageEntity voyageEntity = new VoyageEntity();
-                voyageEntity.setId(resultSet.getString("ID"));
                 voyageEntity.setFlightNumber(resultSet.getString("Flight_number"));
                 voyageEntity.setArrivalPort(resultSet.getString("Arrival_port"));
                 voyageEntity.setDeparturePort(resultSet.getString("Departure_port"));
                 list.add(voyageEntity);
             }
-            preparedStatement.close();
+            statement.close();
         } catch (SQLException exception) {
             exception.printStackTrace();
         } finally {
@@ -56,11 +57,41 @@ public class VoyageDAO {
         return list;
     }
 
+    public VoyageEntity getById (int id){
+        VoyageEntity voyageEntity=null;
+        try {
+            statement = getConnection().prepareStatement("SELECT * FROM voyage WHERE ID = ?");
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                voyageEntity = new VoyageEntity();
+                voyageEntity.setId(resultSet.getInt("ID"));
+                voyageEntity.setFlightNumber(resultSet.getString("Flight_number"));
+                voyageEntity.setArrivalPort(resultSet.getString("Arrival_port"));
+                voyageEntity.setDeparturePort(resultSet.getString("Departure_port"));
+            }
+            statement.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return voyageEntity;
+    }
+
+
+
+
     public void deleteById(int id) {
         try {
-            preparedStatement = getConnection().prepareStatement("DELETE FROM voyage WHRE ID =?");
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
+            statement = getConnection().prepareStatement("DELETE FROM voyage WHERE ID =?");
+            statement.setInt(1,id);
+            statement.executeUpdate();
+            statement.close();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -68,11 +99,13 @@ public class VoyageDAO {
 
     public void update(VoyageEntity voyageEntity) {
         try {
-            preparedStatement = getConnection().prepareStatement("UPDATE voyage SET ID=?,Flight_number=?,Arrival_port=?,Departure_port=?");
-            preparedStatement.setString(1,voyageEntity.getId());
-            preparedStatement.setString(2,voyageEntity.getFlightNumber());
-            preparedStatement.setString(3,voyageEntity.getArrivalPort());
-            preparedStatement.setString(4,voyageEntity.getDeparturePort());
+            statement = getConnection().prepareStatement("UPDATE voyage SET Flight_number=?,Arrival_port=?,Departure_port=? WHERE ID=?");
+            statement.setString(1,voyageEntity.getFlightNumber());
+            statement.setString(2,voyageEntity.getArrivalPort());
+            statement.setString(3,voyageEntity.getDeparturePort());
+            statement.setInt(4,voyageEntity.getId());
+            statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

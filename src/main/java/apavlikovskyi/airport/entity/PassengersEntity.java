@@ -12,6 +12,18 @@ public class PassengersEntity {
     private String dob;
     private String sex;
 
+    public PassengersEntity() {}
+
+    public PassengersEntity(int id, String first_name, String last_name, String nationality, String passport, String dob, String sex) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.nationality = nationality;
+        this.passport = passport;
+        this.dob = dob;
+        this.sex = sex;
+    }
+
     public int getId() {
         return id;
     }

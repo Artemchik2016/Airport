@@ -4,26 +4,39 @@ package apavlikovskyi.airport.entity;
  * Created by Артем on 08.04.2017.
  */
 public class VoyageEntity {
-    private String id;
+    private int id;
     private String flightNumber;
     private String arrivalPort;
     private String departurePort;
 
-    public VoyageEntity(){}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VoyageEntity)) return false;
 
-    public VoyageEntity(String id, String flightNumber, String arrivalPort, String departurePort) {
-        this.id = id;
-        this.flightNumber = flightNumber;
-        this.arrivalPort = arrivalPort;
-        this.departurePort = departurePort;
+        VoyageEntity that = (VoyageEntity) o;
+
+        if (id != that.id) return false;
+        if (flightNumber != null ? !flightNumber.equals(that.flightNumber) : that.flightNumber != null) return false;
+        if (arrivalPort != null ? !arrivalPort.equals(that.arrivalPort) : that.arrivalPort != null) return false;
+        return departurePort != null ? departurePort.equals(that.departurePort) : that.departurePort == null;
     }
 
-    public String getId() {
+    public VoyageEntity(){}
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public VoyageEntity(int id, String flightNumber, String arrivalPort, String departurePort) {
+        this.id=id;
+        this.flightNumber = flightNumber;
+        this.arrivalPort = arrivalPort;
+        this.departurePort = departurePort;
     }
 
     public String getFlightNumber() {

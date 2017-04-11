@@ -19,10 +19,10 @@ public class DepartureDAO {
     ResultSet resultSet;
 
 
-    public  void deleteById(int id){
+    public  void deleteById(String s){
         try {
-            statement = getConnection().prepareStatement("DELETE FROM departure WHERE ID = ?");
-            statement.setInt(1,id);
+            statement = getConnection().prepareStatement("DELETE FROM departure WHERE Voyage_flightNumber = ?");
+            statement.setString(1,s);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -39,10 +39,10 @@ public class DepartureDAO {
             list = new ArrayList<>();
             while (resultSet.next()) {
                 DepartureEntity departureEntity= new DepartureEntity();
-                departureEntity.setVoyage_id(resultSet.getString("Voyage_id"));
+                departureEntity.setVoyage_id(resultSet.getString("Voyage_flightNumber"));
                 departureEntity.setDate(resultSet.getString("Date"));
                 departureEntity.setTime(resultSet.getString("Time"));
-                departureEntity.setTerminal(resultSet.getString("Terminbal"));
+                departureEntity.setTerminal(resultSet.getString("Terminal"));
                 departureEntity.setFlight_status(resultSet.getString("Flight_status"));
                 departureEntity.setGate(resultSet.getString("Gate"));
                 list.add(departureEntity);
@@ -60,19 +60,21 @@ public class DepartureDAO {
         return list;
     }
 
-    public DepartureEntity getById (int id){
+    public DepartureEntity getById (String s){
         DepartureEntity departureEntity=null;
         try {
-            statement = getConnection().prepareStatement("SELECT * FROM departure WHERE ID = ?");
-            statement.setInt(1,id);
+            statement = getConnection().prepareStatement("SELECT * FROM departure WHERE Voyage_flightNumber = ?");
+            statement.setString(1,s);
             resultSet= statement.executeQuery();
-            departureEntity= new DepartureEntity();
-            departureEntity.setVoyage_id(resultSet.getString("Voyage_id"));
-            departureEntity.setDate(resultSet.getString("Date"));
-            departureEntity.setTime(resultSet.getString("Time"));
-            departureEntity.setTerminal(resultSet.getString("Terminbal"));
-            departureEntity.setFlight_status(resultSet.getString("Flight_status"));
-            departureEntity.setGate(resultSet.getString("Gate"));
+            while (resultSet.next()) {
+                departureEntity = new DepartureEntity();
+                departureEntity.setVoyage_id(resultSet.getString("Voyage_flightNumber"));
+                departureEntity.setDate(resultSet.getString("Date"));
+                departureEntity.setTime(resultSet.getString("Time"));
+                departureEntity.setTerminal(resultSet.getString("Terminal"));
+                departureEntity.setFlight_status(resultSet.getString("Flight_status"));
+                departureEntity.setGate(resultSet.getString("Gate"));
+            }
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,8 +107,8 @@ public class DepartureDAO {
     }
     public  void update(DepartureEntity departureEntity){
         try {
-            statement = getConnection().prepareStatement("UPDATE departure SET Voyage_id=?," +
-                    "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE ID = ?");
+            statement = getConnection().prepareStatement("UPDATE departure SET " +
+                    "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE Voyage_flightNumber=?");
             statement.setString(1,departureEntity.getVoyage_id());
             statement.setString(2,departureEntity.getDate());
             statement.setString(3,departureEntity.getTime());

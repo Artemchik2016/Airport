@@ -42,6 +42,7 @@ public class PassengersDAO {
                 passengersEntity.setFirst_name(resultSet.getString("First_name"));
                 passengersEntity.setLast_name(resultSet.getString("Last_name"));
                 passengersEntity.setNationality(resultSet.getString("Nationality"));
+                passengersEntity.setNationality(resultSet.getString("Passport"));
                 passengersEntity.setPassport(resultSet.getString("DOB"));
                 passengersEntity.setDob(resultSet.getString("SEX"));
                 list.add(passengersEntity);
@@ -65,15 +66,16 @@ public class PassengersDAO {
             statement = getConnection().prepareStatement("SELECT * FROM passengers WHERE ID = ?");
             statement.setInt(1,id);
             resultSet= statement.executeQuery();
-            passengersEntity= new PassengersEntity();
-            passengersEntity.setId(resultSet.getInt("ID"));
-            passengersEntity.setFirst_name(resultSet.getString("First_name"));
-            passengersEntity.setLast_name(resultSet.getString("Last_name"));
-            passengersEntity.setNationality(resultSet.getString("Nationality"));
-            passengersEntity.setPassport(resultSet.getString("SEX"));
-            passengersEntity.setPassport(resultSet.getString("DOB"));
-            passengersEntity.setDob(resultSet.getString("SEX"));
-
+            while(resultSet.next()) {
+                passengersEntity = new PassengersEntity();
+                passengersEntity.setId(resultSet.getInt("ID"));
+                passengersEntity.setFirst_name(resultSet.getString("First_name"));
+                passengersEntity.setLast_name(resultSet.getString("Last_name"));
+                passengersEntity.setNationality(resultSet.getString("Nationality"));
+                passengersEntity.setPassport(resultSet.getString("Passport"));
+                passengersEntity.setDob(resultSet.getString("DOB"));
+                passengersEntity.setSex(resultSet.getString("SEX"));
+            }
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,13 +94,13 @@ public class PassengersDAO {
     public  void save(PassengersEntity passengersEntity){
         try {
             statement = getConnection().prepareStatement("INSERT INTO passengers VALUES (?,?,?,?,?,?,?)");
-            passengersEntity.setId(resultSet.getInt("ID"));
-            passengersEntity.setFirst_name(resultSet.getString("First_name"));
-            passengersEntity.setLast_name(resultSet.getString("Last_name"));
-            passengersEntity.setNationality(resultSet.getString("Nationality"));
-            passengersEntity.setPassport(resultSet.getString("SEX"));
-            passengersEntity.setPassport(resultSet.getString("DOB"));
-            passengersEntity.setDob(resultSet.getString("SEX"));
+            statement.setInt(1,passengersEntity.getId());
+            statement.setString(2,passengersEntity.getFirst_name());
+            statement.setString(3,passengersEntity.getLast_name());
+            statement.setString(4,passengersEntity.getNationality());
+            statement.setString(5,passengersEntity.getPassport());
+            statement.setString(6,passengersEntity.getDob());
+            statement.setString(7,passengersEntity.getSex());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -107,15 +109,15 @@ public class PassengersDAO {
     }
     public  void update(PassengersEntity passengersEntity){
         try {
-            statement = getConnection().prepareStatement("UPDATE passengers SET ID=?," +
+            statement = getConnection().prepareStatement("UPDATE passengers SET " +
                     "First_name = ?, Last_name = ?, Nationality = ?,Passport=?, DOB=?, SEX=? WHERE ID = ?");
-            statement.setInt(1,passengersEntity.getId());
-            statement.setString(2,passengersEntity.getFirst_name());
-            statement.setString(3,passengersEntity.getLast_name());
-            statement.setString(4,passengersEntity.getNationality());
-            statement.setString(5,passengersEntity.getPassport());
-            statement.setString(6,passengersEntity.getDob());
+            statement.setString(1,passengersEntity.getFirst_name());
+            statement.setString(2,passengersEntity.getLast_name());
+            statement.setString(3,passengersEntity.getNationality());
+            statement.setString(4,passengersEntity.getPassport());
+            statement.setString(5,passengersEntity.getDob());
             statement.setString(6,passengersEntity.getSex());
+            statement.setInt(7,passengersEntity.getId());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {

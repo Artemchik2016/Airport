@@ -37,9 +37,9 @@ public class TicketDAO {
             while (resultSet.next()) {
                 TicketEntity ticket= new TicketEntity();
                 ticket.setId(resultSet.getInt("ID"));
-                ticket.setVoyageId(resultSet.getString("Voyage_id"));
+                ticket.setVoyageId(resultSet.getString("Voyage_flightNumber"));
                 ticket.setSeatClass(resultSet.getString("Seat_number"));
-                ticket.setPassengerId(resultSet.getString("Passenger_id"));
+                ticket.setPassengerId(resultSet.getInt("Passenger_id"));
                 ticket.setSeatNumber(resultSet.getString("Seat_number"));
                 list.add(ticket);
             }
@@ -60,16 +60,18 @@ public class TicketDAO {
         TicketEntity ticket=null;
         try {
             statement = getConnection().prepareStatement("SELECT * FROM ticket WHERE ID = ?");
-            statement.setInt(1,id);
-            resultSet= statement.executeQuery();
-            ticket = new TicketEntity();
-            ticket.setId(resultSet.getInt("ID"));
-            ticket.setVoyageId(resultSet.getString("Voyage_id"));
-            ticket.setSeatClass(resultSet.getString("Seat_number"));
-            ticket.setPassengerId(resultSet.getString("Passenger_id"));
-            ticket.setSeatNumber(resultSet.getString("Seat_number"));
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ticket = new TicketEntity();
+                ticket.setId(resultSet.getInt("ID"));
+                ticket.setVoyageId(resultSet.getString("Voyage_flightNumber"));
+                ticket.setSeatClass(resultSet.getString("Class"));
+                ticket.setPassengerId(resultSet.getInt("Passenger_id"));
+                ticket.setSeatNumber(resultSet.getString("Seat_number"));
+            }
             statement.close();
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
         }finally{
             try {
@@ -89,7 +91,7 @@ public class TicketDAO {
             statement.setInt(1,entity.getId());
             statement.setString(2,entity.getVoyageId());
             statement.setString(3,entity.getSeatClass());
-            statement.setString(4,entity.getPassengerId());
+            statement.setInt(4,entity.getPassengerId());
             statement.setString(5,entity.getSeatNumber());
             statement.executeUpdate();
             statement.close();
@@ -99,13 +101,14 @@ public class TicketDAO {
     }
     public  void update(TicketEntity entity){
         try {
-            statement = getConnection().prepareStatement("UPDATE ticket SET Voyage_id=?," +
+            statement = getConnection().prepareStatement("UPDATE ticket SET Voyage_flightNumber=?," +
                     "Class = ?, Passenger_id = ?, Seat_number = ? WHERE ID = ?");
             statement.setString(1,entity.getVoyageId());
             statement.setString(2,entity.getSeatClass());
-            statement.setString(3,entity.getPassengerId());
+            statement.setInt(3,entity.getPassengerId());
             statement.setString(4,entity.getSeatNumber());
             statement.setInt(5,entity.getId());
+            statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();

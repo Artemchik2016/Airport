@@ -11,6 +11,17 @@ public class DepartureEntity {
     private String flight_status;
     private String gate;
 
+    public DepartureEntity(){}
+
+    public DepartureEntity(String voyage_id, String date, String time, String terminal, String flight_status, String gate) {
+        this.voyage_id = voyage_id;
+        this.date = date;
+        this.time = time;
+        this.terminal = terminal;
+        this.flight_status = flight_status;
+        this.gate = gate;
+    }
+
     public String getVoyage_id() {
         return voyage_id;
     }

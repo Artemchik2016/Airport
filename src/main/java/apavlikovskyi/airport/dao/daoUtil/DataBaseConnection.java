@@ -30,6 +30,17 @@ public class DataBaseConnection {
         return connection;
     }
 
+    public static Connection getTestConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                return connection = DriverManager.getConnection(dbProps.getProperty("db.urlTest"),
+                        dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
     public static void closeConnection() {
         if (connection != null) {
             try {

@@ -1,4 +1,4 @@
-package apavlikovskyi.Airport.DAO;
+package apavlikovskyi.airport.dao;
 
 /**
  * Created by Артем on 08.04.2017.

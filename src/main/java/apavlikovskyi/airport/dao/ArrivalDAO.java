@@ -21,10 +21,10 @@ public class ArrivalDAO {
     ResultSet resultSet;
 
 
-    public  void deleteById(int id){
+    public  void deleteById(String s){
         try {
-            statement = getConnection().prepareStatement("DELETE FROM arrival WHERE ID = ?");
-            statement.setInt(1,id);
+            statement = getConnection().prepareStatement("DELETE FROM arrival WHERE Voyage_flightNumber = ?");
+            statement.setString(1,s);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -41,10 +41,10 @@ public class ArrivalDAO {
             list = new ArrayList<>();
             while (resultSet.next()) {
                 ArrivalEntity arrivalEntity= new ArrivalEntity();
-                arrivalEntity.setVoyage_id(resultSet.getString("Voyage_id"));
+                arrivalEntity.setVoyage_id(resultSet.getString("Voyage_flightNumber"));
                 arrivalEntity.setDate(resultSet.getString("Date"));
                 arrivalEntity.setTime(resultSet.getString("Time"));
-                arrivalEntity.setTerminal(resultSet.getString("Terminbal"));
+                arrivalEntity.setTerminal(resultSet.getString("Terminal"));
                 arrivalEntity.setFlight_status(resultSet.getString("Flight_status"));
                 arrivalEntity.setGate(resultSet.getString("Gate"));
                 list.add(arrivalEntity);
@@ -62,21 +62,23 @@ public class ArrivalDAO {
         return list;
     }
 
-    public AirplanesEntity getById (int id){
-        AirplanesEntity airplanesEntity=null;
+    public ArrivalEntity getById (String s){
+        ArrivalEntity arrivalEntity=null;
         try {
-            statement = getConnection().prepareStatement("SELECT * FROM arrival WHERE ID = ?");
-            statement.setInt(1,id);
-            resultSet= statement.executeQuery();
-            ArrivalEntity arrivalEntity= new ArrivalEntity();
-            arrivalEntity.setVoyage_id(resultSet.getString("Voyage_id"));
-            arrivalEntity.setDate(resultSet.getString("Date"));
-            arrivalEntity.setTime(resultSet.getString("Time"));
-            arrivalEntity.setTerminal(resultSet.getString("Terminbal"));
-            arrivalEntity.setFlight_status(resultSet.getString("Flight_status"));
-            arrivalEntity.setGate(resultSet.getString("Gate"));
+            statement = getConnection().prepareStatement("SELECT * FROM arrival WHERE Voyage_flightNumber = ?");
+            statement.setString(1, s);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                arrivalEntity = new ArrivalEntity();
+                arrivalEntity.setVoyage_id(resultSet.getString("Voyage_flightNumber"));
+                arrivalEntity.setDate(resultSet.getString("Date"));
+                arrivalEntity.setTime(resultSet.getString("Time"));
+                arrivalEntity.setTerminal(resultSet.getString("Terminal"));
+                arrivalEntity.setFlight_status(resultSet.getString("Flight_status"));
+                arrivalEntity.setGate(resultSet.getString("Gate"));
+            }
             statement.close();
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
         }finally{
             try {
@@ -85,14 +87,14 @@ public class ArrivalDAO {
                 e.printStackTrace();
             }
         }
-        return airplanesEntity;
+        return arrivalEntity;
     }
 
 
 
     public  void save(ArrivalEntity arrivalEntity){
         try {
-            statement = getConnection().prepareStatement("INSERT INTO airplanes VALUES (?,?,?,?,?,?)");
+            statement = getConnection().prepareStatement("INSERT INTO arrival VALUES (?,?,?,?,?,?)");
             statement.setString(1,arrivalEntity.getVoyage_id());
             statement.setString(2,arrivalEntity.getDate());
             statement.setString(3,arrivalEntity.getTime());
@@ -107,8 +109,8 @@ public class ArrivalDAO {
     }
     public  void update(ArrivalEntity arrivalEntity){
         try {
-            statement = getConnection().prepareStatement("UPDATE arrival SET Voyage_id=?," +
-                    "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE ID = ?");
+            statement = getConnection().prepareStatement("UPDATE arrival SET " +
+                    "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE Voyage_flightNumber = ?");
             statement.setString(1,arrivalEntity.getVoyage_id());
             statement.setString(2,arrivalEntity.getDate());
             statement.setString(3,arrivalEntity.getTime());

@@ -7,13 +7,13 @@ public class TicketEntity {
     private int id;
     private String voyageId;
     private String seatClass;
-    private String passengerId;
+    private int passengerId;
     private String seatNumber;
 
 
     public  TicketEntity(){}
 
-    public TicketEntity(int id,String voyageId, String seatClass, String passengerId, String seatNumber) {
+    public TicketEntity(int id,String voyageId, String seatClass, int passengerId, String seatNumber) {
         this.id=id;
         this.voyageId = voyageId;
         this.seatClass = seatClass;
@@ -33,6 +33,21 @@ public class TicketEntity {
         return voyageId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TicketEntity)) return false;
+
+        TicketEntity that = (TicketEntity) o;
+
+        if (id != that.id) return false;
+        if (passengerId != that.passengerId) return false;
+        if (voyageId != null ? !voyageId.equals(that.voyageId) : that.voyageId != null) return false;
+        if (seatClass != null ? !seatClass.equals(that.seatClass) : that.seatClass != null) return false;
+        return seatNumber != null ? seatNumber.equals(that.seatNumber) : that.seatNumber == null;
+    }
+
+
     public void setVoyageId(String voyageId) {
         this.voyageId = voyageId;
     }
@@ -45,11 +60,11 @@ public class TicketEntity {
         this.seatClass = seatClass;
     }
 
-    public String getPassengerId() {
+    public int getPassengerId() {
         return passengerId;
     }
 
-    public void setPassengerId(String passengerId) {
+    public void setPassengerId(int passengerId) {
         this.passengerId = passengerId;
     }
 
