@@ -34,10 +34,11 @@ public class DepartureDAOTest {
 
         @After
         public void after() throws SQLException {
-            PreparedStatement ps=DataBaseConnection.getConnection().prepareStatement("DROP DATABASE testairport");
-            ps.executeUpdate();
-            ps.close();
-            DataBaseConnection.closeConnection();
+           try (PreparedStatement ps=DataBaseConnection.getConnection().prepareStatement("DROP DATABASE testairport")) {
+               ps.executeUpdate();
+               DataBaseConnection.closeConnection();
+           }
+
         }
 
 

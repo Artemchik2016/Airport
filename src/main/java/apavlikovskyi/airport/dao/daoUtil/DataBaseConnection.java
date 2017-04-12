@@ -58,11 +58,4 @@ public class DataBaseConnection {
         flyway.migrate();
     }
 
-    public static void testMigrate() {
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(dbProps.getProperty("db.urlTest"),
-                dbProps.getProperty("db.user"), dbProps.getProperty("db.password"));
-        flyway.migrate();
-    }
-
 }

@@ -14,16 +14,11 @@ import static apavlikovskyi.airport.dao.daoUtil.DataBaseConnection.getConnection
  * Created by Артем on 08.04.2017.
  */
 public class AirplanesDAO {
-        PreparedStatement statement;
-        ResultSet resultSet;
-
 
         public  void deleteById(String s){
-            try {
-                statement = getConnection().prepareStatement("DELETE FROM airplanes WHERE Voyage_flightNumber = ?");
+            try(PreparedStatement statement=getConnection().prepareStatement("DELETE FROM airplanes WHERE Voyage_flightNumber = ?")) {
                 statement.setString(1,s);
                 statement.executeUpdate();
-                statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -32,8 +27,7 @@ public class AirplanesDAO {
         public List<AirplanesEntity> getAll(){
             List<AirplanesEntity> list=null;
             ResultSet resultSet=null;
-            try {
-                statement = getConnection().prepareStatement("SELECT * FROM airplanes");
+            try(PreparedStatement statement=getConnection().prepareStatement("SELECT * FROM airplanes")) {
                 resultSet=statement.executeQuery();
                 list = new ArrayList<>();
                 while (resultSet.next()) {
@@ -43,7 +37,6 @@ public class AirplanesDAO {
                     airplanesEntity.setSeats_capacity(resultSet.getInt("Seats_capacity"));
                     list.add(airplanesEntity);
                 }
-                statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }finally{
@@ -58,8 +51,8 @@ public class AirplanesDAO {
 
         public AirplanesEntity getById (String s){
             AirplanesEntity airplanesEntity=null;
-            try {
-                statement = getConnection().prepareStatement("SELECT * FROM airplanes WHERE Voyage_flightNumber = ?");
+            ResultSet resultSet=null;
+            try(PreparedStatement statement=getConnection().prepareStatement("SELECT * FROM airplanes WHERE Voyage_flightNumber = ?")) {
                 statement.setString(1, s);
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
@@ -68,7 +61,6 @@ public class AirplanesDAO {
                     airplanesEntity.setName(resultSet.getString("Name"));
                     airplanesEntity.setSeats_capacity(resultSet.getInt("Seats_capacity"));
                 }
-                statement.close();
             }catch (SQLException e) {
                 e.printStackTrace();
             }finally{
@@ -81,11 +73,8 @@ public class AirplanesDAO {
             return airplanesEntity;
         }
 
-
-
         public  void save(AirplanesEntity airplanesEntity){
-            try {
-                statement = getConnection().prepareStatement("INSERT INTO airplanes VALUES (?,?,?)");
+            try(PreparedStatement statement=getConnection().prepareStatement("INSERT INTO airplanes VALUES (?,?,?)")) {
                 statement.setString(1,airplanesEntity.getVoyage_flightNumber());
                 statement.setString(2,airplanesEntity.getName());
                 statement.setInt(3,airplanesEntity.getSeats_capacity());
@@ -96,18 +85,15 @@ public class AirplanesDAO {
             }
         }
         public  void update(AirplanesEntity airplanesEntity){
-            try {
-                statement = getConnection().prepareStatement("UPDATE airplanes SET " +
-                        "Name = ?, Seats_capacity = ? WHERE Voyage_flightNumber = ?");
+            try(PreparedStatement statement=getConnection().prepareStatement("UPDATE airplanes SET " +
+                    "Name = ?, Seats_capacity = ? WHERE Voyage_flightNumber = ?")) {
                 statement.setString(1,airplanesEntity.getName());
                 statement.setInt(2,airplanesEntity.getSeats_capacity());
                 statement.setString(3,airplanesEntity.getVoyage_flightNumber());
                 statement.executeUpdate();
-                statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
 }
 

@@ -9,18 +9,6 @@ public class VoyageEntity {
     private String arrivalPort;
     private String departurePort;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VoyageEntity)) return false;
-
-        VoyageEntity that = (VoyageEntity) o;
-
-        if (id != that.id) return false;
-        if (flightNumber != null ? !flightNumber.equals(that.flightNumber) : that.flightNumber != null) return false;
-        if (arrivalPort != null ? !arrivalPort.equals(that.arrivalPort) : that.arrivalPort != null) return false;
-        return departurePort != null ? departurePort.equals(that.departurePort) : that.departurePort == null;
-    }
 
     public VoyageEntity(){}
 
@@ -61,5 +49,18 @@ public class VoyageEntity {
 
     public void setDeparturePort(String departurePort) {
         this.departurePort = departurePort;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VoyageEntity)) return false;
+
+        VoyageEntity that = (VoyageEntity) o;
+
+        if (id != that.id) return false;
+        if (flightNumber != null ? !flightNumber.equals(that.flightNumber) : that.flightNumber != null) return false;
+        if (arrivalPort != null ? !arrivalPort.equals(that.arrivalPort) : that.arrivalPort != null) return false;
+        return departurePort != null ? departurePort.equals(that.departurePort) : that.departurePort == null;
     }
 }

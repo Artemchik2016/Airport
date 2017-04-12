@@ -15,16 +15,10 @@ import static apavlikovskyi.airport.dao.daoUtil.DataBaseConnection.getConnection
  */
 public class DepartureDAO {
 
-    PreparedStatement statement;
-    ResultSet resultSet;
-
-
     public  void deleteById(String s){
-        try {
-            statement = getConnection().prepareStatement("DELETE FROM departure WHERE Voyage_flightNumber = ?");
+        try(PreparedStatement statement = getConnection().prepareStatement("DELETE FROM departure WHERE Voyage_flightNumber = ?")) {
             statement.setString(1,s);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -33,8 +27,7 @@ public class DepartureDAO {
     public List<DepartureEntity> getAll(){
         List<DepartureEntity> list=null;
         ResultSet resultSet=null;
-        try {
-            statement = getConnection().prepareStatement("SELECT * FROM departure");
+        try (PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM departure")){
             resultSet=statement.executeQuery();
             list = new ArrayList<>();
             while (resultSet.next()) {
@@ -47,7 +40,6 @@ public class DepartureDAO {
                 departureEntity.setGate(resultSet.getString("Gate"));
                 list.add(departureEntity);
             }
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -62,8 +54,8 @@ public class DepartureDAO {
 
     public DepartureEntity getById (String s){
         DepartureEntity departureEntity=null;
-        try {
-            statement = getConnection().prepareStatement("SELECT * FROM departure WHERE Voyage_flightNumber = ?");
+        ResultSet resultSet=null;
+        try(PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM departure WHERE Voyage_flightNumber = ?")) {
             statement.setString(1,s);
             resultSet= statement.executeQuery();
             while (resultSet.next()) {
@@ -75,7 +67,6 @@ public class DepartureDAO {
                 departureEntity.setFlight_status(resultSet.getString("Flight_status"));
                 departureEntity.setGate(resultSet.getString("Gate"));
             }
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -91,8 +82,7 @@ public class DepartureDAO {
 
 
     public  void save(DepartureEntity departureEntity){
-        try {
-            statement = getConnection().prepareStatement("INSERT INTO departure VALUES (?,?,?,?,?,?)");
+        try (PreparedStatement statement = getConnection().prepareStatement("INSERT INTO departure VALUES (?,?,?,?,?,?)")) {
             statement.setString(1,departureEntity.getVoyage_id());
             statement.setString(2,departureEntity.getDate());
             statement.setString(3,departureEntity.getTime());
@@ -100,15 +90,13 @@ public class DepartureDAO {
             statement.setString(5,departureEntity.getFlight_status());
             statement.setString(6,departureEntity.getGate());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     public  void update(DepartureEntity departureEntity){
-        try {
-            statement = getConnection().prepareStatement("UPDATE departure SET " +
-                    "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE Voyage_flightNumber=?");
+        try  (PreparedStatement statement = getConnection().prepareStatement("UPDATE departure SET " +
+                "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE Voyage_flightNumber=?")){
             statement.setString(1,departureEntity.getVoyage_id());
             statement.setString(2,departureEntity.getDate());
             statement.setString(3,departureEntity.getTime());
@@ -116,7 +104,6 @@ public class DepartureDAO {
             statement.setString(5,departureEntity.getFlight_status());
             statement.setString(6,departureEntity.getGate());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

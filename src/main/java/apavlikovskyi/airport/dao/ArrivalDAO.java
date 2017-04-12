@@ -16,17 +16,10 @@ import static apavlikovskyi.airport.dao.daoUtil.DataBaseConnection.getConnection
  */
 public class ArrivalDAO {
 
-
-    PreparedStatement statement;
-    ResultSet resultSet;
-
-
     public  void deleteById(String s){
-        try {
-            statement = getConnection().prepareStatement("DELETE FROM arrival WHERE Voyage_flightNumber = ?");
+        try (PreparedStatement statement = getConnection().prepareStatement("DELETE FROM arrival WHERE Voyage_flightNumber = ?")){
             statement.setString(1,s);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,8 +28,7 @@ public class ArrivalDAO {
     public List<ArrivalEntity> getAll(){
         List<ArrivalEntity> list=null;
         ResultSet resultSet=null;
-        try {
-            statement = getConnection().prepareStatement("SELECT * FROM arrival");
+        try (PreparedStatement statement= getConnection().prepareStatement("SELECT * FROM arrival")){
             resultSet=statement.executeQuery();
             list = new ArrayList<>();
             while (resultSet.next()) {
@@ -49,7 +41,6 @@ public class ArrivalDAO {
                 arrivalEntity.setGate(resultSet.getString("Gate"));
                 list.add(arrivalEntity);
             }
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -64,11 +55,11 @@ public class ArrivalDAO {
 
     public ArrivalEntity getById (String s){
         ArrivalEntity arrivalEntity=null;
-        try {
-            statement = getConnection().prepareStatement("SELECT * FROM arrival WHERE Voyage_flightNumber = ?");
-            statement.setString(1, s);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
+        ResultSet resultSet=null;
+        try (PreparedStatement statement= getConnection().prepareStatement("SELECT * FROM arrival WHERE Voyage_flightNumber = ?")) {
+             statement.setString(1, s);
+             resultSet=statement.executeQuery();
+             while (resultSet.next()) {
                 arrivalEntity = new ArrivalEntity();
                 arrivalEntity.setVoyage_id(resultSet.getString("Voyage_flightNumber"));
                 arrivalEntity.setDate(resultSet.getString("Date"));
@@ -77,7 +68,6 @@ public class ArrivalDAO {
                 arrivalEntity.setFlight_status(resultSet.getString("Flight_status"));
                 arrivalEntity.setGate(resultSet.getString("Gate"));
             }
-            statement.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -93,8 +83,7 @@ public class ArrivalDAO {
 
 
     public  void save(ArrivalEntity arrivalEntity){
-        try {
-            statement = getConnection().prepareStatement("INSERT INTO arrival VALUES (?,?,?,?,?,?)");
+        try(PreparedStatement statement= getConnection().prepareStatement("INSERT INTO arrival VALUES (?,?,?,?,?,?)")) {
             statement.setString(1,arrivalEntity.getVoyage_id());
             statement.setString(2,arrivalEntity.getDate());
             statement.setString(3,arrivalEntity.getTime());
@@ -102,15 +91,13 @@ public class ArrivalDAO {
             statement.setString(5,arrivalEntity.getFlight_status());
             statement.setString(6,arrivalEntity.getGate());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     public  void update(ArrivalEntity arrivalEntity){
-        try {
-            statement = getConnection().prepareStatement("UPDATE arrival SET " +
-                    "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE Voyage_flightNumber = ?");
+        try (PreparedStatement statement= getConnection().prepareStatement("UPDATE arrival SET " +
+                "Date = ?, Time = ?, Terminal = ?,Flight_status=?, Gate=? WHERE Voyage_flightNumber = ?")) {
             statement.setString(1,arrivalEntity.getVoyage_id());
             statement.setString(2,arrivalEntity.getDate());
             statement.setString(3,arrivalEntity.getTime());
@@ -118,7 +105,6 @@ public class ArrivalDAO {
             statement.setString(5,arrivalEntity.getFlight_status());
             statement.setString(6,arrivalEntity.getGate());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

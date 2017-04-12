@@ -15,18 +15,14 @@ import java.util.List;
  * Created by Артем on 08.04.2017.
  */
 public class VoyageDAO {
-    PreparedStatement statement;
-    ResultSet resultSet;
 
     public void save(VoyageEntity voyage) {
-        try {
-            statement = getConnection().prepareStatement("INSERT INTO voyage VALUES (?,?,?,?)");
+        try(PreparedStatement statement = getConnection().prepareStatement("INSERT INTO voyage VALUES (?,?,?,?)")) {
             statement.setInt(1,voyage.getId());
             statement.setString(2, voyage.getFlightNumber());
             statement.setString(3, voyage.getArrivalPort());
             statement.setString(4, voyage.getDeparturePort());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -34,8 +30,8 @@ public class VoyageDAO {
 
     public List getAll() {
         List<VoyageEntity> list = new ArrayList<>();
-        try {
-            statement = getConnection().prepareStatement("SELECT * FROM voyage");
+        ResultSet resultSet=null;
+        try (PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM voyage")){
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 VoyageEntity voyageEntity = new VoyageEntity();
@@ -44,7 +40,6 @@ public class VoyageDAO {
                 voyageEntity.setDeparturePort(resultSet.getString("Departure_port"));
                 list.add(voyageEntity);
             }
-            statement.close();
         } catch (SQLException exception) {
             exception.printStackTrace();
         } finally {
@@ -59,8 +54,8 @@ public class VoyageDAO {
 
     public VoyageEntity getById (int id){
         VoyageEntity voyageEntity=null;
-        try {
-            statement = getConnection().prepareStatement("SELECT * FROM voyage WHERE ID = ?");
+        ResultSet resultSet=null;
+        try (PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM voyage WHERE ID = ?")){
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -70,7 +65,6 @@ public class VoyageDAO {
                 voyageEntity.setArrivalPort(resultSet.getString("Arrival_port"));
                 voyageEntity.setDeparturePort(resultSet.getString("Departure_port"));
             }
-            statement.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -87,25 +81,21 @@ public class VoyageDAO {
 
 
     public void deleteById(int id) {
-        try {
-            statement = getConnection().prepareStatement("DELETE FROM voyage WHERE ID =?");
+        try (PreparedStatement statement = getConnection().prepareStatement("DELETE FROM voyage WHERE ID =?")) {
             statement.setInt(1,id);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
 
     public void update(VoyageEntity voyageEntity) {
-        try {
-            statement = getConnection().prepareStatement("UPDATE voyage SET Flight_number=?,Arrival_port=?,Departure_port=? WHERE ID=?");
+        try  (PreparedStatement statement = getConnection().prepareStatement("UPDATE voyage SET Flight_number=?,Arrival_port=?,Departure_port=? WHERE ID=?")){
             statement.setString(1,voyageEntity.getFlightNumber());
             statement.setString(2,voyageEntity.getArrivalPort());
             statement.setString(3,voyageEntity.getDeparturePort());
             statement.setInt(4,voyageEntity.getId());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

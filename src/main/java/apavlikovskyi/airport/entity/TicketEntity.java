@@ -33,21 +33,6 @@ public class TicketEntity {
         return voyageId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TicketEntity)) return false;
-
-        TicketEntity that = (TicketEntity) o;
-
-        if (id != that.id) return false;
-        if (passengerId != that.passengerId) return false;
-        if (voyageId != null ? !voyageId.equals(that.voyageId) : that.voyageId != null) return false;
-        if (seatClass != null ? !seatClass.equals(that.seatClass) : that.seatClass != null) return false;
-        return seatNumber != null ? seatNumber.equals(that.seatNumber) : that.seatNumber == null;
-    }
-
-
     public void setVoyageId(String voyageId) {
         this.voyageId = voyageId;
     }
@@ -75,4 +60,19 @@ public class TicketEntity {
     public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TicketEntity)) return false;
+
+        TicketEntity that = (TicketEntity) o;
+
+        if (id != that.id) return false;
+        if (passengerId != that.passengerId) return false;
+        if (voyageId != null ? !voyageId.equals(that.voyageId) : that.voyageId != null) return false;
+        if (seatClass != null ? !seatClass.equals(that.seatClass) : that.seatClass != null) return false;
+        return seatNumber != null ? seatNumber.equals(that.seatNumber) : that.seatNumber == null;
+    }
+
 }
