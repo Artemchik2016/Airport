@@ -5,16 +5,25 @@ package apavlikovskyi.airport.entity;
  */
 public class AirplanesEntity {
 
-    private String voyage_id;
+    private String Voyage_flightNumber;
     private  String name;
     private int seats_capacity;
 
-    public String getVoyage_id() {
-        return voyage_id;
+
+   public AirplanesEntity(){}
+
+    public AirplanesEntity(String voyage_id, String name, int seats_capacity) {
+        this.Voyage_flightNumber = voyage_id;
+        this.name = name;
+        this.seats_capacity = seats_capacity;
     }
 
-    public void setVoyage_id(String voyage_id) {
-        this.voyage_id = voyage_id;
+    public String getVoyage_flightNumber() {
+        return Voyage_flightNumber;
+    }
+
+    public void setVoyage_flightNumber(String voyage_flightNumber) {
+        this.Voyage_flightNumber = voyage_flightNumber;
     }
 
     public String getName() {

@@ -18,10 +18,10 @@ public class AirplanesDAO {
         ResultSet resultSet;
 
 
-        public  void deleteById(int id){
+        public  void deleteById(String s){
             try {
-                statement = getConnection().prepareStatement("DELETE FROM airplanes WHERE ID = ?");
-                statement.setInt(1,id);
+                statement = getConnection().prepareStatement("DELETE FROM airplanes WHERE Voyage_flightNumber = ?");
+                statement.setString(1,s);
                 statement.executeUpdate();
                 statement.close();
             } catch (SQLException e) {
@@ -38,7 +38,7 @@ public class AirplanesDAO {
                 list = new ArrayList<>();
                 while (resultSet.next()) {
                     AirplanesEntity airplanesEntity= new AirplanesEntity();
-                    airplanesEntity.setVoyage_id(resultSet.getString("Voyage_id"));
+                    airplanesEntity.setVoyage_flightNumber(resultSet.getString("Voyage_flightNumber"));
                     airplanesEntity.setName(resultSet.getString("Name"));
                     airplanesEntity.setSeats_capacity(resultSet.getInt("Seats_capacity"));
                     list.add(airplanesEntity);
@@ -56,18 +56,20 @@ public class AirplanesDAO {
             return list;
         }
 
-        public AirplanesEntity getById (int id){
+        public AirplanesEntity getById (String s){
             AirplanesEntity airplanesEntity=null;
             try {
-                statement = getConnection().prepareStatement("SELECT * FROM airplanes WHERE ID = ?");
-                statement.setInt(1,id);
-                resultSet= statement.executeQuery();
-                airplanesEntity= new AirplanesEntity();
-                airplanesEntity.setVoyage_id(resultSet.getString("Voyage_id"));
-                airplanesEntity.setName(resultSet.getString("Name"));
-                airplanesEntity.setSeats_capacity(resultSet.getInt("Seats_capacity"));
+                statement = getConnection().prepareStatement("SELECT * FROM airplanes WHERE Voyage_flightNumber = ?");
+                statement.setString(1, s);
+                resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    airplanesEntity = new AirplanesEntity();
+                    airplanesEntity.setVoyage_flightNumber(resultSet.getString("Voyage_flightNumber"));
+                    airplanesEntity.setName(resultSet.getString("Name"));
+                    airplanesEntity.setSeats_capacity(resultSet.getInt("Seats_capacity"));
+                }
                 statement.close();
-            } catch (SQLException e) {
+            }catch (SQLException e) {
                 e.printStackTrace();
             }finally{
                 try {
@@ -83,8 +85,8 @@ public class AirplanesDAO {
 
         public  void save(AirplanesEntity airplanesEntity){
             try {
-                statement = getConnection().prepareStatement("INSERT INTO airplanes VALUES (?,?,?,?)");
-                statement.setString(1,airplanesEntity.getVoyage_id());
+                statement = getConnection().prepareStatement("INSERT INTO airplanes VALUES (?,?,?)");
+                statement.setString(1,airplanesEntity.getVoyage_flightNumber());
                 statement.setString(2,airplanesEntity.getName());
                 statement.setInt(3,airplanesEntity.getSeats_capacity());
                 statement.executeUpdate();
@@ -95,15 +97,17 @@ public class AirplanesDAO {
         }
         public  void update(AirplanesEntity airplanesEntity){
             try {
-                statement = getConnection().prepareStatement("UPDATE airplanes SET Voyage_id=?," +
-                        "Class = ?, Passenger_id = ?, Seat_number = ? WHERE ID = ?");
-                statement.setString(1,airplanesEntity.getVoyage_id());
-                statement.setString(2,airplanesEntity.getName());
-                statement.setInt(3,airplanesEntity.getSeats_capacity());
+                statement = getConnection().prepareStatement("UPDATE airplanes SET " +
+                        "Name = ?, Seats_capacity = ? WHERE Voyage_flightNumber = ?");
+                statement.setString(1,airplanesEntity.getName());
+                statement.setInt(2,airplanesEntity.getSeats_capacity());
+                statement.setString(3,airplanesEntity.getVoyage_flightNumber());
+                statement.executeUpdate();
                 statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+
 }
 
