@@ -2,7 +2,6 @@ package apavlikovskyi.airport.dao;
 
 import apavlikovskyi.airport.dao.daoUtil.DataBaseConnection;
 import apavlikovskyi.airport.entity.AirplanesEntity;
-import apavlikovskyi.airport.entity.ArrivalEntity;
 import apavlikovskyi.airport.entity.VoyageEntity;
 import org.junit.After;
 import org.junit.Before;
